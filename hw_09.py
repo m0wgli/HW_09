@@ -7,6 +7,10 @@ def input_error(func):
             return func(*args)
         except IndexError:
             return 'Not enough params. Try help'
+        except ValueError:
+            return 'Invalid value. Try again'
+        except KeyError:
+            return 'Contact not found. Try again'
     return inner
 
 
@@ -22,8 +26,8 @@ def help(*args):
 @input_error
 def add(*args):
     list_of_param = args[0].split()
-    name = list_of_param[0]
-    phone = list_of_param[1]
+    name = list_of_param[1]
+    phone = list_of_param[2]
     contacts[name] = phone
 
     if not phone:
@@ -44,6 +48,7 @@ def no_command(*args):
     return '''Unknown command, try again'''
 
 
+@input_error
 def phone(*args):
     list_of_param = args[0].split()
     name = list_of_param[0]
@@ -54,6 +59,7 @@ def show_all(*args):
     return f'''{contacts}'''
 
 
+@input_error
 def change(*args):
     list_of_param = args[0].split()
     name = list_of_param[0]
@@ -85,7 +91,7 @@ def command_handler(text):
 def main():
     print(help())
     while True:
-        user_input = input('<<<')
+        user_input = input('>>>')
         command, data = command_handler(user_input)
 
         print(command(data))
